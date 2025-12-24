@@ -1,0 +1,18 @@
+---
+id: 0
+name: Mainnet deployment
+network: mainnet
+stacks-node: "https://api.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: stacks-poap
+            expected-sender: SP95KYNT2QWA2EXJS2WZT666ZVXDA4QV4AZZ2T5G
+            cost: 6731652
+            path: contracts/stacks-poap.clar
+            anchor-block-only: true
+            clarity-version: 2
+      epoch: "2.5"
