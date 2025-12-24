@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { callReadOnlyFunction, cvToJSON } from '@stacks/transactions';
+import { fetchCallReadOnlyFunction, cvToJSON } from '@stacks/transactions';
 import { useStacks } from '../context/StacksContext';
 import { CONTRACT_ADDRESS, CONTRACT_NAME } from '../utils/constants';
 
@@ -10,7 +10,7 @@ export const useSupply = () => {
 
     const fetchSupply = async () => {
         try {
-            const result = await callReadOnlyFunction({
+            const result = await fetchCallReadOnlyFunction({
                 contractAddress: CONTRACT_ADDRESS,
                 contractName: CONTRACT_NAME,
                 functionName: 'get-last-token-id',
@@ -23,6 +23,7 @@ export const useSupply = () => {
             setSupply(parseInt(json.value.value));
             setIsLoading(false);
         } catch (e) {
+
             console.error('Error fetching supply:', e);
             setIsLoading(false);
         }

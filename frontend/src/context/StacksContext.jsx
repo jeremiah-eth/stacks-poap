@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AppConfig, UserSession, showConnect } from '@stacks/connect';
-import { StacksMainnet } from '@stacks/network';
+import { STACKS_MAINNET } from '@stacks/network';
 
 const StacksContext = createContext();
 
@@ -50,7 +50,7 @@ export const StacksProvider = ({ children }) => {
         isConnected: !!userData,
         connectWallet,
         disconnectWallet,
-        network: new StacksMainnet()
+        network: STACKS_MAINNET
     };
 
     return (
