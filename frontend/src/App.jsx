@@ -1,8 +1,25 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Button from './components/Button'
+import { useStacks } from './context/StacksContext'
+import { useMint } from './hooks/useMint'
+import { useSupply } from './hooks/useSupply'
+import toast from 'react-hot-toast'
 
 function App() {
+  const { isConnected, connectWallet } = useStacks();
+  const { mint, isMinting } = useMint();
+  const { supply } = useSupply();
+
+  const handleMint = async () => {
+    if (!isConnected) {
+      connectWallet();
+      return;
+    }
+    await mint();
+    toast.success('Minting started! Check your wallet.');
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -19,8 +36,12 @@ function App() {
             Claim your unique Proof of Attendance badges on the Stacks blockchain. Fast, permanent, and free to mint.
           </p>
           <div className="flex justify-center gap-4">
-            <Button>
-              Mint My Badge
+            <Button
+              onClick={handleMint}
+              disabled={isMinting}
+              className={isMinting ? 'animate-pulse' : ''}
+            >
+              {isMinting ? 'Minting...' : 'Mint My Badge'}
             </Button>
             <Button variant="secondary">
               View Collection
@@ -31,8 +52,8 @@ function App() {
         <div className="grid md:grid-cols-3 gap-6 pt-12 border-t border-white/5">
           {[
             { label: 'Network', value: 'Stacks Mainnet', color: 'text-cyber-500' },
-            { label: 'Total Minted', value: '0', color: 'text-cyber-400' },
-            { label: 'Standard', value: 'SIP-009', color: 'text-indigo-400' }
+            { label: 'Total Minted', value: supply.toString(), color: 'text-cyber-400' },
+            { label: 'Standard', value: 'Nakamoto (Clarity 4)', color: 'text-indigo-400' }
           ].map((stat) => (
             <div key={stat.label} className="p-6 rounded-2xl glass">
               <p className="text-slate-500 text-sm font-bold uppercase tracking-widest mb-1">{stat.label}</p>
@@ -41,6 +62,7 @@ function App() {
           ))}
         </div>
       </main>
+
 
 
       <footer className="py-12 px-6 border-t border-white/5 text-center text-slate-500 text-sm">
