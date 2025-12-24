@@ -4,11 +4,13 @@ description = ''
 authors = []
 telemetry = true
 cache_dir = './.cache'
-requirements = []
-[contracts.simple-nft]
-path = 'contracts/simple-nft.clar'
-clarity_version = 4
-epoch = 'latest'
+requirements = [
+    { contract_id = 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait' }
+]
+[contracts.stacks-poap]
+path = 'contracts/stacks-poap.clar'
+clarity_version = 2
+epoch = 2.5
 [repl.analysis]
 passes = [
     'check_checker',
