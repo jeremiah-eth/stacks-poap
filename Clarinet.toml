@@ -4,9 +4,7 @@ description = ''
 authors = []
 telemetry = true
 cache_dir = './.cache'
-requirements = [
-    { contract_id = 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait' }
-]
+requirements = []
 [contracts.stacks-poap]
 path = 'contracts/stacks-poap.clar'
 clarity_version = 2
