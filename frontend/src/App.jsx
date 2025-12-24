@@ -39,7 +39,7 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl mb-6 max-w-4xl mx-auto leading-[0.9]"
+            className="text-5xl sm:text-7xl md:text-8xl mb-6 max-w-4xl mx-auto leading-[1] md:leading-[0.9]"
           >
             Prove You Were <span className="text-gradient">There.</span>
           </motion.h1>
@@ -55,7 +55,7 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex justify-center gap-4"
+            className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <Button
               onClick={handleMint}
@@ -72,7 +72,7 @@ function App() {
           </motion.div>
         </section>
 
-        <div className="grid md:grid-cols-3 gap-6 pt-12 border-t border-white/5 mb-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-12 border-t border-white/5 mb-32">
           {[
             { label: 'Network', value: 'Stacks Mainnet', color: 'text-cyber-500' },
             { label: 'Total Minted', value: supply.toString(), color: 'text-cyber-400' },
