@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Button from './components/Button'
+import CollectionGrid from './components/CollectionGrid'
 import { useStacks } from './context/StacksContext'
 import { useMint } from './hooks/useMint'
 import { useSupply } from './hooks/useSupply'
@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 function App() {
   const { isConnected, connectWallet } = useStacks();
   const { mint, isMinting } = useMint();
-  const { supply } = useSupply();
+  const { supply, refresh: refreshSupply } = useSupply();
 
   const handleMint = async () => {
     if (!isConnected) {
@@ -18,6 +18,7 @@ function App() {
     }
     await mint();
     toast.success('Minting started! Check your wallet.');
+    // In a real app, we'd wait for tx confirmation here
   };
 
   return (
@@ -43,13 +44,15 @@ function App() {
             >
               {isMinting ? 'Minting...' : 'Mint My Badge'}
             </Button>
-            <Button variant="secondary">
-              View Collection
-            </Button>
+            <a href="#collection">
+              <Button variant="secondary">
+                View Collection
+              </Button>
+            </a>
           </div>
         </section>
 
-        <div className="grid md:grid-cols-3 gap-6 pt-12 border-t border-white/5">
+        <div className="grid md:grid-cols-3 gap-6 pt-12 border-t border-white/5 mb-32">
           {[
             { label: 'Network', value: 'Stacks Mainnet', color: 'text-cyber-500' },
             { label: 'Total Minted', value: supply.toString(), color: 'text-cyber-400' },
@@ -61,7 +64,18 @@ function App() {
             </div>
           ))}
         </div>
+
+        <section id="collection" className="py-20 border-t border-white/5">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-4xl mb-2">Your <span className="text-gradient">Collection</span></h2>
+              <p className="text-slate-400">Badges you've claimed for participating in events.</p>
+            </div>
+          </div>
+          <CollectionGrid />
+        </section>
       </main>
+
 
 
 

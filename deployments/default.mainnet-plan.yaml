@@ -11,8 +11,8 @@ plan:
         - contract-publish:
             contract-name: stacks-poap
             expected-sender: SP95KYNT2QWA2EXJS2WZT666ZVXDA4QV4AZZ2T5G
-            cost: 6731652
+            cost: 728749
             path: contracts/stacks-poap.clar
             anchor-block-only: true
-            clarity-version: 2
-      epoch: "2.5"
+            clarity-version: 4
+      epoch: "3.3"

@@ -7,8 +7,8 @@ cache_dir = './.cache'
 requirements = []
 [contracts.stacks-poap]
 path = 'contracts/stacks-poap.clar'
-clarity_version = 2
-epoch = 2.5
+clarity_version = 4
+epoch = 'latest'
 [repl.analysis]
 passes = [
     'check_checker',
