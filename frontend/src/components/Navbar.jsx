@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
+import { useStacks } from '../context/StacksContext';
+import { LogOut, User, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
+    const { isConnected, address, connectWallet, disconnectWallet } = useStacks();
+    const [showMenu, setShowMenu] = useState(false);
+
+    const truncateAddress = (addr) => {
+        if (!addr) return '';
+        return `${addr.slice(0, 5)}...${addr.slice(-4)}`;
+    };
+
     return (
         <nav className="h-20 border-b border-white/5 flex items-center px-6 glass sticky top-0 z-50">
             <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
@@ -19,9 +29,37 @@ const Navbar = () => {
                         <a href="#" className="hover:text-cyber-400 transition-colors">How it works</a>
                         <a href="#" className="hover:text-cyber-400 transition-colors">Explorer</a>
                     </div>
-                    <Button variant="outline" className="px-5 py-2.5 text-sm">
-                        Connect Wallet
-                    </Button>
+
+                    {!isConnected ? (
+                        <Button variant="outline" className="px-5 py-2.5 text-sm" onClick={connectWallet}>
+                            Connect Wallet
+                        </Button>
+                    ) : (
+                        <div className="relative">
+                            <button
+                                onClick={() => setShowMenu(!showMenu)}
+                                className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-white/10 transition-all border border-white/10"
+                            >
+                                <div className="w-6 h-6 rounded-full bg-cyber-500/20 flex items-center justify-center text-cyber-400">
+                                    <User size={14} />
+                                </div>
+                                <span className="text-sm font-bold text-slate-200">{truncateAddress(address)}</span>
+                                <ChevronDown size={14} className={`text-slate-500 transition-transform ${showMenu ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {showMenu && (
+                                <div className="absolute right-0 mt-2 w-48 rounded-2xl glass border border-white/10 p-2 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <button
+                                        onClick={disconnectWallet}
+                                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition-all text-sm font-bold"
+                                    >
+                                        <LogOut size={16} />
+                                        Disconnect
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>
@@ -29,3 +67,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
