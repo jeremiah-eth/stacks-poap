@@ -28,16 +28,35 @@ function App() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-12">
         <section className="text-center py-20 pb-32">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-cyber-500/10 border border-cyber-500/20 text-cyber-400 text-xs font-bold uppercase tracking-widest mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-block px-4 py-1.5 rounded-full bg-cyber-500/10 border border-cyber-500/20 text-cyber-400 text-xs font-bold uppercase tracking-widest mb-6"
+          >
             Mainnet Live
-          </div>
-          <h1 className="text-6xl md:text-8xl mb-6 max-w-4xl mx-auto leading-[0.9]">
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-6xl md:text-8xl mb-6 max-w-4xl mx-auto leading-[0.9]"
+          >
             Prove You Were <span className="text-gradient">There.</span>
-          </h1>
-          <p className="text-slate-400 text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-slate-400 text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
             Claim your unique Proof of Attendance badges on the Stacks blockchain. Fast, permanent, and free to mint.
-          </p>
-          <div className="flex justify-center gap-4">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex justify-center gap-4"
+          >
             <Button
               onClick={handleMint}
               disabled={isMinting}
@@ -50,7 +69,7 @@ function App() {
                 View Collection
               </Button>
             </a>
-          </div>
+          </motion.div>
         </section>
 
         <div className="grid md:grid-cols-3 gap-6 pt-12 border-t border-white/5 mb-32">

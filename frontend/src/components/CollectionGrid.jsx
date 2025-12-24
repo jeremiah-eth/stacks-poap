@@ -36,16 +36,38 @@ const CollectionGrid = () => {
         );
     }
 
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div className="grid md:grid-cols-3 gap-8">
+        <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid md:grid-cols-3 gap-8"
+        >
             {badges.map((badge) => (
-                <BadgeCard
-                    key={badge.value.repr}
-                    tokenId={badge.value.repr.replace('u', '')}
-                />
+                <motion.div key={badge.value.repr} variants={item}>
+                    <BadgeCard
+                        tokenId={badge.value.repr.replace('u', '')}
+                    />
+                </motion.div>
             ))}
-        </div>
+        </motion.div>
     );
 };
+
 
 export default CollectionGrid;
