@@ -3,6 +3,7 @@ import BadgeCard from './Card';
 import { useCollection } from '../hooks/useCollection';
 import { useStacks } from '../context/StacksContext';
 import Button from './Button';
+import { motion } from 'framer-motion';
 
 const CollectionGrid = () => {
     const { isConnected, connectWallet } = useStacks();

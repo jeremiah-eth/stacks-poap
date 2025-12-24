@@ -5,6 +5,7 @@ import { useStacks } from './context/StacksContext'
 import { useMint } from './hooks/useMint'
 import { useSupply } from './hooks/useSupply'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 
 function App() {
   const { isConnected, connectWallet } = useStacks();
