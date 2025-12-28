@@ -4,7 +4,30 @@ import { useCollection } from '../hooks/useCollection';
 import { useStacks } from '../context/StacksContext';
 import { useMint } from '../hooks/useMint';
 import EmptyState from './ui/EmptyState';
-import toast from 'react-hot-toast';
+import { useRef, useEffect } from 'react';
+import VanillaTilt from 'vanilla-tilt';
+
+const TiltCard = ({ children, className }) => {
+    const tiltRef = useRef(null);
+
+    useEffect(() => {
+        if (tiltRef.current) {
+            VanillaTilt.init(tiltRef.current, {
+                max: 15,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.3,
+                scale: 1.02
+            });
+        }
+    }, []);
+
+    return (
+        <div ref={tiltRef} className={className}>
+            {children}
+        </div>
+    );
+};
 
 const CollectionGrid = () => {
     const { isConnected, connectWallet } = useStacks();
@@ -60,20 +83,21 @@ const CollectionGrid = () => {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group relative aspect-square rounded-2xl overflow-hidden glass hover:shadow-2xl hover:shadow-cyber-500/20 transition-all duration-500"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-cyber-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <TiltCard className="group relative aspect-square rounded-2xl overflow-hidden glass hover:shadow-2xl hover:shadow-cyber-500/20 transition-all duration-500 cursor-pointer">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-cyber-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                <img
-                                    src={badge.image}
-                                    alt={badge.name}
-                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                                />
+                                    <img
+                                        src={badge.image}
+                                        alt={badge.name}
+                                        className="w-full h-full object-cover transform"
+                                    />
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                    <span className="text-cyber-400 text-xs font-bold uppercase tracking-wider mb-1">Badge #{badge.id}</span>
-                                    <h3 className="text-white font-bold text-lg leading-tight">{badge.name}</h3>
-                                </div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                        <span className="text-cyber-400 text-xs font-bold uppercase tracking-wider mb-1">Badge #{badge.id}</span>
+                                        <h3 className="text-white font-bold text-lg leading-tight">{badge.name}</h3>
+                                    </div>
+                                </TiltCard>
                             </motion.div>
                         ))}
                     </AnimatePresence>
