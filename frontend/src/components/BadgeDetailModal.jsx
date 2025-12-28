@@ -11,6 +11,25 @@ const BadgeDetailModal = ({ badge, isOpen, onClose }) => {
     const explorerLink = `${EXPLORER_BASE_URL}/txid/${badge.txId}?chain=mainnet`;
     const shareUrl = window.location.href; // In real app, deep link to badge
 
+    const handleDownload = async () => {
+        try {
+            const response = await fetch(badge.image);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `stacks-poap-${badge.id}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error('Download failed:', e);
+            // Fallback
+            window.open(badge.image, '_blank');
+        }
+    };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={badge.name}>
             <div className="flex flex-col md:flex-row gap-8">
@@ -66,8 +85,11 @@ const BadgeDetailModal = ({ badge, isOpen, onClose }) => {
                         >
                             <ExternalLink size={16} /> Explorer
                         </a>
-                        <button className="flex-1 flex items-center justify-center gap-2 bg-cyber-500/20 hover:bg-cyber-500/30 text-cyber-400 py-3 rounded-xl font-bold transition-all text-sm">
-                            <Share2 size={16} /> Share
+                        <button
+                            onClick={handleDownload}
+                            className="flex-1 flex items-center justify-center gap-2 bg-cyber-500/20 hover:bg-cyber-500/30 text-cyber-400 py-3 rounded-xl font-bold transition-all text-sm"
+                        >
+                            <Download size={16} /> Download
                         </button>
                     </div>
                 </motion.div>
