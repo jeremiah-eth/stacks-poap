@@ -32,11 +32,14 @@ const TransactionStatusCard = ({ txId, onClose }) => {
                     color: 'border-green-500/20 bg-green-500/10'
                 };
             case 'failed':
+                // Try to extract a useful error message if available in tx data
+                const errorReason = data?.tx_result?.repr || 'Transaction was aborted';
+                
                 return {
                     icon: <XCircle className="text-red-400" size={20} />,
                     title: 'Transaction Failed',
-                    desc: 'Please try again.',
-                    color: 'border-red-500/20 bg-red-500/10'
+                    desc: errorReason.replace(/"/g, ''),
+                    color: 'border-red-500/20 bg-red-950/80'
                 };
             default:
                 return {
