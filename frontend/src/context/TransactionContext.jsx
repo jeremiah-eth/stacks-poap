@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import confetti from 'canvas-confetti';
 
 const TransactionContext = createContext();
 
@@ -58,6 +59,11 @@ export const TransactionProvider = ({ children }) => {
                             toast.success('Transaction confirmed!', {
                                 icon: '✅',
                                 style: { background: '#020617', color: '#fff', border: '1px solid rgba(74,222,128,0.2)' }
+                            });
+                            confetti({
+                                particleCount: 100,
+                                spread: 70,
+                                origin: { y: 0.6 }
                             });
                         } else if (data.tx_status.startsWith('abort')) {
                             updateTransaction(tx.txId, { status: 'failed', error: data.tx_result?.repr });
