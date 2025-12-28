@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from '../ui/Modal';
+import Modal from './ui/Modal';
 import { motion } from 'framer-motion';
 import { Calendar, Hash, Share2, Download, ExternalLink } from 'lucide-react';
 import { formatCompactDate } from '../../utils/format';
