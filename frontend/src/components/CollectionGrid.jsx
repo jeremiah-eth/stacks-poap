@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCollection } from '../hooks/useCollection';
 import { useStacks } from '../context/StacksContext';
 import { useMint } from '../hooks/useMint';
 import EmptyState from './ui/EmptyState';
-import { useRef, useEffect } from 'react';
+import BadgeDetailModal from './BadgeDetailModal';
 import VanillaTilt from 'vanilla-tilt';
+import toast from 'react-hot-toast';
 
 const TiltCard = ({ children, className }) => {
     const tiltRef = useRef(null);
@@ -33,6 +34,7 @@ const CollectionGrid = () => {
     const { isConnected, connectWallet } = useStacks();
     const { badges, isLoading } = useCollection();
     const { mint } = useMint();
+    const [selectedBadge, setSelectedBadge] = useState(null);
 
     const handleMint = async () => {
         if (!isConnected) {
@@ -83,6 +85,7 @@ const CollectionGrid = () => {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.1 }}
+                                onClick={() => setSelectedBadge(badge)}
                             >
                                 <TiltCard className="group relative aspect-square rounded-2xl overflow-hidden glass hover:shadow-2xl hover:shadow-cyber-500/20 transition-all duration-500 cursor-pointer">
                                     <div className="absolute inset-0 bg-gradient-to-br from-cyber-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -105,6 +108,12 @@ const CollectionGrid = () => {
             ) : (
                 <EmptyState onAction={handleMint} actionLabel="Mint First Badge" />
             )}
+
+            <BadgeDetailModal
+                badge={selectedBadge}
+                isOpen={!!selectedBadge}
+                onClose={() => setSelectedBadge(null)}
+            />
         </motion.div>
     );
 };
