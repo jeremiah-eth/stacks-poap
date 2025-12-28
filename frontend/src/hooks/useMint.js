@@ -7,12 +7,13 @@ import toast from 'react-hot-toast';
 
 export const useMint = () => {
     const { userSession, network, address } = useStacks();
-    const [isMinting, setIsMinting] = useState(false);
+    const [mintStatus, setMintStatus] = useState('idle'); // idle, preparing, signing, broadcasting, success, error
     const [txId, setTxId] = useState(null);
 
     const mint = useCallback(async () => {
         if (!userSession.isUserSignedIn()) return;
 
+        setMintStatus('preparing');
         // Balance Check
         try {
             const apiUrl = network.coreApiUrl;
@@ -23,6 +24,7 @@ export const useMint = () => {
             // Should have at least 0.5 STX for fees
             if (balance < 500000) {
                 toast.error('Insufficient STX balance for fees');
+                setMintStatus('error');
                 return;
             }
         } catch (e) {
@@ -30,7 +32,7 @@ export const useMint = () => {
             // Proceed anyway, let the wallet handle it if check fails
         }
 
-        setIsMinting(true);
+        setMintStatus('signing');
         try {
             await openContractCall({
                 contractAddress: CONTRACT_ADDRESS,
@@ -41,7 +43,8 @@ export const useMint = () => {
                 onFinish: (data) => {
                     console.log('Transaction broadcasted:', data.txId);
                     setTxId(data.txId);
-                    setIsMinting(false);
+                    setMintStatus('broadcasting'); // It's broadcasted, but we wait for exploration
+                    setTimeout(() => setMintStatus('success'), 1000);
                     toast.success('Transaction broadcasted!', {
                         duration: 5000,
                         icon: '🚀',
@@ -54,16 +57,16 @@ export const useMint = () => {
                 },
                 onCancel: () => {
                     console.log('User cancelled minting');
-                    setIsMinting(false);
+                    setMintStatus('idle');
                     toast.error('Minting cancelled');
                 },
             });
         } catch (e) {
             console.error('Minting error:', e);
-            setIsMinting(false);
+            setMintStatus('error');
             toast.error('Something went wrong');
         }
-    }, [userSession, network]);
+    }, [userSession, network, address]);
 
-    return { mint, isMinting, txId };
+    return { mint, mintStatus, txId, isMinting: mintStatus !== 'idle' && mintStatus !== 'error' };
 };
