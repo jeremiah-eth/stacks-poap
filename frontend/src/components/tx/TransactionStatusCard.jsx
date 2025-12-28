@@ -65,15 +65,28 @@ const TransactionStatusCard = ({ txId, onClose }) => {
                 <div className="flex-1">
                     <h4 className="font-bold text-sm text-white">{config.title}</h4>
                     <p className="text-xs text-slate-400 mt-0.5">{config.desc}</p>
-                    <a
-                        href={explorerLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 hover:text-cyber-400 mt-2 transition-colors"
-                    >
-                        {truncateAddress(txId, 6, 6)}
-                        <ExternalLink size={10} />
-                    </a>
+
+                    <div className="flex items-center gap-4 mt-2">
+                        <a
+                            href={explorerLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 hover:text-cyber-400 transition-colors"
+                        >
+                            {truncateAddress(txId, 6, 6)}
+                            <ExternalLink size={10} />
+                        </a>
+
+                        {status === 'success' && (
+                            <a
+                                href="#collection"
+                                onClick={onClose}
+                                className="text-[10px] font-bold text-cyber-400 hover:text-cyber-300 transition-colors"
+                            >
+                                View Badge →
+                            </a>
+                        )}
+                    </div>
                 </div>
                 <button
                     onClick={() => setIsVisible(false)}
