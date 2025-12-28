@@ -35,13 +35,22 @@ A decentralized Proof of Attendance Protocol built on the Stacks blockchain. Use
    npm run dev
    ```
 
-## 🌍 Deployment
+## 🚀 Deployment
 
-### Frontend (Vercel / Netlify)
-1. Connect your GitHub repository.
-2. Set the **Root Directory** to `frontend`.
-3. Build Command: `npm run build`.
-4. Output Directory: `dist`.
+### Vercel (Recommended)
+1. Fork this repository.
+2. Import project into Vercel.
+3. Set environment variables (if any, e.g. `VITE_STACKS_NETWORK` for testnet override).
+4. Deploy.
+
+### Netlify
+1. Drag and drop the `dist` folder after running `npm run build`.
+2. Or connect your Git repo and use build command `npm run build` and publish directory `dist`.
+
+## 🛠 Tech Stack
+- **Frontend**: React (Vite), Tailwind CSS, Framer Motion
+- **Blockchain**: Stacks.js, Clarity
+- **Styling**: Glassmorphism, Premium Dark UI
 
 ### Smart Contract
 The contract is already deployed on Mainnet. If you wish to deploy your own version:
