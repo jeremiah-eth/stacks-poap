@@ -1,62 +1,57 @@
 import React from 'react';
-import BadgeCard from './Card';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCollection } from '../hooks/useCollection';
 import { useStacks } from '../context/StacksContext';
-import Button from './Button';
-import { motion } from 'framer-motion';
+import { useMint } from '../hooks/useMint';
+import EmptyState from './ui/EmptyState';
+import toast from 'react-hot-toast';
 
 const CollectionGrid = () => {
     const { isConnected, connectWallet } = useStacks();
     const { badges, isLoading } = useCollection();
+    const { mint } = useMint();
+
+    const handleMint = async () => {
+        if (!isConnected) {
+            connectWallet();
+            return;
+        }
+        // Small check to ensure user knows
+        toast.promise(mint(), {
+            loading: 'Preparing to mint...',
+            success: 'Minting process started!',
+            error: 'Minting cancelled or failed',
+        });
+    };
 
     if (!isConnected) {
         return (
             <div className="py-20 text-center glass rounded-3xl border-dashed border-2 border-white/5">
                 <h3 className="text-2xl font-display font-bold mb-4">Connect to see your collection</h3>
-                <Button variant="secondary" onClick={connectWallet}>Connect Wallet</Button>
+                <button onClick={connectWallet} className="px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors font-bold">
+                    Connect Wallet
+                </button>
             </div>
         );
     }
 
     if (isLoading) {
         return (
-            <div className="grid md:grid-cols-3 gap-8">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-64 rounded-3xl glass animate-pulse"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="aspect-square rounded-2xl bg-white/5 animate-pulse" />
                 ))}
             </div>
         );
     }
 
-    if (badges.length === 0) {
-        return (
-            <div className="py-20 text-center glass rounded-3xl border-dashed border-2 border-white/5">
-                <p className="text-slate-500 font-bold uppercase tracking-widest">You don't have any badges yet</p>
-            </div>
-        );
-    }
-
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
-
-    const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 }
-    };
     return (
         <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="min-h-[50vh]"
         >
-            <div className="min-h-[50vh]">
+            {badges.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <AnimatePresence>
                         {badges.map((badge, index) => (
@@ -83,18 +78,11 @@ const CollectionGrid = () => {
                         ))}
                     </AnimatePresence>
                 </div>
-                {badges.length === 0 && !isLoading && (
-                    <div className="text-center py-20">
-                        <p className="text-slate-400">No badges found in this wallet.</p>
-                        <button onClick={handleMint} className="mt-4 text-cyber-400 hover:text-cyber-300 font-bold">
-                            Mint your first badge →
-                        </button>
-                    </div>
-                )}
-            </div>
+            ) : (
+                <EmptyState onAction={handleMint} actionLabel="Mint First Badge" />
+            )}
         </motion.div>
     );
 };
-
 
 export default CollectionGrid;
