@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useStacks } from '../context/StacksContext';
-import { useBNS } from '../hooks/useBNS';
-import { truncateAddress } from '../utils/format';
-import { User, ChevronDown, LogOut, Copy } from 'lucide-react';
+import { useSTXBalance } from '../hooks/useSTXBalance';
+import { truncateAddress, formatSTX } from '../utils/format';
+import { User, ChevronDown, LogOut, Copy, RefreshCw } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const UserMenu = () => {
     const { address, disconnectWallet } = useStacks();
     const { name } = useBNS();
+    const { stx, loading: balanceLoading, refresh: refreshBalance } = useSTXBalance();
     const [isOpen, setIsOpen] = useState(false);
 
     const displayName = name || truncateAddress(address);
@@ -43,7 +44,17 @@ const UserMenu = () => {
                     >
                         <div className="px-4 py-3 border-b border-white/5 mb-2">
                             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Signed in as</p>
-                            <p className="text-sm text-white font-mono break-all">{name || address}</p>
+                            <p className="text-sm text-white font-mono break-all mb-2">{name || address}</p>
+
+                            <div className="flex items-center justify-between text-xs bg-black/20 rounded-lg p-2">
+                                <span className="text-slate-400">Balance:</span>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-cyber-400 font-mono font-bold">{formatSTX(stx)}</span>
+                                    <button onClick={refreshBalance} className={`text-slate-500 hover:text-white transition-colors ${balanceLoading ? 'animate-spin' : ''}`}>
+                                        <RefreshCw size={10} />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <button
