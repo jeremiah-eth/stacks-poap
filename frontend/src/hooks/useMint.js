@@ -4,9 +4,11 @@ import { uintCV } from '@stacks/transactions';
 import { useStacks } from '../context/StacksContext';
 import { CONTRACT_ADDRESS, CONTRACT_NAME } from '../utils/constants';
 import toast from 'react-hot-toast';
+import { useTransactions } from '../context/TransactionContext';
 
 export const useMint = () => {
     const { userSession, network, address } = useStacks();
+    const { addTransaction } = useTransactions();
     const [mintStatus, setMintStatus] = useState('idle'); // idle, preparing, signing, broadcasting, success, error
     const [txId, setTxId] = useState(null);
 
@@ -44,6 +46,15 @@ export const useMint = () => {
                     console.log('Transaction broadcasted:', data.txId);
                     setTxId(data.txId);
                     setMintStatus('broadcasting'); // It's broadcasted, but we wait for exploration
+
+                    // Add to global store
+                    addTransaction({
+                        txId: data.txId,
+                        timestamp: Date.now(),
+                        status: 'pending',
+                        type: 'mint'
+                    });
+
                     setTimeout(() => setMintStatus('success'), 1000);
                     toast.success('Transaction broadcasted!', {
                         duration: 5000,
