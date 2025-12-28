@@ -6,12 +6,29 @@ import { CONTRACT_ADDRESS, CONTRACT_NAME } from '../utils/constants';
 import toast from 'react-hot-toast';
 
 export const useMint = () => {
-    const { userSession, network } = useStacks();
+    const { userSession, network, address } = useStacks();
     const [isMinting, setIsMinting] = useState(false);
     const [txId, setTxId] = useState(null);
 
     const mint = useCallback(async () => {
         if (!userSession.isUserSignedIn()) return;
+
+        // Balance Check
+        try {
+            const apiUrl = network.coreApiUrl;
+            const response = await fetch(`${apiUrl}/extended/v1/address/${address}/balances`);
+            const data = await response.json();
+            const balance = parseInt(data.stx.balance);
+
+            // Should have at least 0.5 STX for fees
+            if (balance < 500000) {
+                toast.error('Insufficient STX balance for fees');
+                return;
+            }
+        } catch (e) {
+            console.error('Balance check failed:', e);
+            // Proceed anyway, let the wallet handle it if check fails
+        }
 
         setIsMinting(true);
         try {
