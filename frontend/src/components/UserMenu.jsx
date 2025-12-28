@@ -4,14 +4,15 @@ import { useSTXBalance } from '../hooks/useSTXBalance';
 import { truncateAddress, formatSTX } from '../utils/format';
 import { User, ChevronDown, LogOut, Copy, RefreshCw, Check } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import toast from 'react-hot-toast';
+import Modal from './ui/Modal';
 
 const UserMenu = () => {
     const { address, disconnectWallet } = useStacks();
-    const { name } = useBNS();
+    const { name } = useBNS(); // Added this hook call
     const { stx, loading: balanceLoading, refresh: refreshBalance } = useSTXBalance();
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [showDisconnectModal, setShowDisconnectModal] = useState(false); // Added this state
 
     const copyAddress = () => {
         navigator.clipboard.writeText(address);
@@ -49,7 +50,7 @@ const UserMenu = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute right-0 mt-2 w-64 rounded-2xl glass-premium border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
+                        className="absolute right-0 mt-2 w-72 rounded-2xl glass-premium border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
                     >
                         <div className="px-4 py-3 border-b border-white/5 mb-2">
                             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Signed in as</p>
@@ -76,7 +77,10 @@ const UserMenu = () => {
                         </div>
 
                         <button
-                            onClick={disconnectWallet}
+                            onClick={() => {
+                                setIsOpen(false);
+                                setShowDisconnectModal(true);
+                            }}
                             className="flex items-center gap-3 w-full px-4 py-3 rounded-xl hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition-all text-sm font-bold mt-1"
                         >
                             <LogOut size={16} />
@@ -85,6 +89,35 @@ const UserMenu = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <Modal
+                isOpen={showDisconnectModal}
+                onClose={() => setShowDisconnectModal(false)}
+                title="Disconnect Wallet"
+            >
+                <div className="space-y-6">
+                    <p className="text-slate-300">
+                        Are you sure you want to disconnect? You will need to sign in again to mint badges or view your collection.
+                    </p>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => setShowDisconnectModal(false)}
+                            className="flex-1 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/5 font-bold transition-all"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={() => {
+                                disconnectWallet();
+                                setShowDisconnectModal(false);
+                            }}
+                            className="flex-1 px-4 py-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 font-bold transition-all border border-red-500/20"
+                        >
+                            Disconnect
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
