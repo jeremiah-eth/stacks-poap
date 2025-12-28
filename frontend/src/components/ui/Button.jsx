@@ -6,6 +6,8 @@ const Button = ({ children, variant = 'primary', className = '', ...props }) => 
     const variants = {
         primary: "bg-gradient-to-r from-cyber-500 to-cyber-600 text-white hover:from-cyber-400 hover:to-cyber-500 shadow-lg hover:shadow-xl",
         secondary: "glass hover:bg-white/10 text-white border border-white/10",
+        glow: "bg-gradient-to-r from-cyber-500 to-cyber-600 text-white hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] shadow-[0_0_15px_rgba(14,165,233,0.3)]",
+        outline: "border-2 border-cyber-500 text-cyber-500 hover:bg-cyber-500/10 hover:border-cyber-400 hover:text-cyber-400",
     };
 
     return (
