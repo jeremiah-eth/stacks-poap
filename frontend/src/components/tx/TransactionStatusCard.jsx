@@ -41,9 +41,9 @@ const TransactionStatusCard = ({ txId, onClose }) => {
             default:
                 return {
                     icon: <Loader2 className="text-cyber-400 animate-spin" size={20} />,
-                    title: 'Processing...',
-                    desc: 'Broadcasting to Stacks network',
-                    color: 'border-cyber-500/20 bg-cyber-500/10'
+                    title: 'Confirming Transaction...',
+                    desc: 'This usually takes 1-3 minutes on Stacks.',
+                    color: 'border-cyber-500/20 bg-cyber-950/80'
                 };
         }
     };
