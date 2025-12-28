@@ -8,6 +8,15 @@
   color-scheme: dark;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
+*::selection {
+  background-color: rgba(14, 165, 233, 0.3);
+  color: white;
+}
+
 body {
   @apply font-sans antialiased bg-cyber-950 text-white min-h-screen text-slate-200;
 }
@@ -37,4 +46,29 @@ h6 {
 /* Gradient text utility */
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-cyber-500 to-cyber-400;
+}
+
+/* Custom focus ring */
+*:focus-visible {
+  outline: 2px solid rgba(14, 165, 233, 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(14, 165, 233, 0.3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(14, 165, 233, 0.5);
 }
