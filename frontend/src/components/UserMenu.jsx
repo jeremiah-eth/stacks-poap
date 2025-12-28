@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import { useStacks } from '../context/StacksContext';
 import { useSTXBalance } from '../hooks/useSTXBalance';
 import { truncateAddress, formatSTX } from '../utils/format';
-import { User, ChevronDown, LogOut, Copy, RefreshCw } from 'lucide-react';
+import { User, ChevronDown, LogOut, Copy, RefreshCw, Check } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const UserMenu = () => {
     const { address, disconnectWallet } = useStacks();
     const { name } = useBNS();
     const { stx, loading: balanceLoading, refresh: refreshBalance } = useSTXBalance();
     const [isOpen, setIsOpen] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const copyAddress = () => {
+        navigator.clipboard.writeText(address);
+        setCopied(true);
+        toast.success('Address copied!');
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const displayName = name || truncateAddress(address);
 
@@ -44,7 +53,16 @@ const UserMenu = () => {
                     >
                         <div className="px-4 py-3 border-b border-white/5 mb-2">
                             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Signed in as</p>
-                            <p className="text-sm text-white font-mono break-all mb-2">{name || address}</p>
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-sm text-white font-mono break-all">{name || address}</p>
+                                <button
+                                    onClick={copyAddress}
+                                    className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                                    title="Copy Address"
+                                >
+                                    {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                                </button>
+                            </div>
 
                             <div className="flex items-center justify-between text-xs bg-black/20 rounded-lg p-2">
                                 <span className="text-slate-400">Balance:</span>
