@@ -9,7 +9,12 @@ const BadgeDetailModal = ({ badge, isOpen, onClose }) => {
     if (!badge) return null;
 
     const explorerLink = `${EXPLORER_BASE_URL}/txid/${badge.txId}?chain=mainnet`;
-    const shareUrl = window.location.href; // In real app, deep link to badge
+
+    const handleShare = () => {
+        const text = `I just minted my Stacks POAP Badge #${badge.id}! 🚀\n\nCheck it out here:`;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
+        window.open(url, '_blank');
+    };
 
     const handleDownload = async () => {
         try {
@@ -86,8 +91,14 @@ const BadgeDetailModal = ({ badge, isOpen, onClose }) => {
                             <ExternalLink size={16} /> Explorer
                         </a>
                         <button
-                            onClick={handleDownload}
+                            onClick={handleShare}
                             className="flex-1 flex items-center justify-center gap-2 bg-cyber-500/20 hover:bg-cyber-500/30 text-cyber-400 py-3 rounded-xl font-bold transition-all text-sm"
+                        >
+                            <Share2 size={16} /> Share
+                        </button>
+                        <button
+                            onClick={handleDownload}
+                            className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white py-3 rounded-xl font-bold transition-all text-sm"
                         >
                             <Download size={16} /> Download
                         </button>
