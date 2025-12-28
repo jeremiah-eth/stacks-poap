@@ -3,10 +3,33 @@
 .cache/**
 history.txt
 
+# Logs
 logs
 *.log
 npm-debug.log*
-coverage
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
 *.info
+
+# Clarity
 costs-reports.json
-node_modules
+.DS_Store
+
+# Dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
