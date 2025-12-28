@@ -85,15 +85,22 @@ function App() {
           ))}
         </div>
 
-        <section id="collection" className="py-20 border-t border-white/5">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-4xl mb-2">Your <span className="text-gradient">Collection</span></h2>
-              <p className="text-slate-400">Badges you've claimed for participating in events.</p>
+        <Section id="collection" className="min-h-screen pt-20 pb-20">
+          <Container>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">
+                  Your Collection
+                </h2>
+                <p className="text-slate-400 mt-2 text-sm md:text-base">
+                  Badges earned through your Stacks journey
+                </p>
+              </div>
             </div>
-          </div>
-          <CollectionGrid />
-        </section>
+
+            <CollectionGrid />
+          </Container>
+        </Section>
       </main>
 
 
